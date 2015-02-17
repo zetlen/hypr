@@ -1,0 +1,39 @@
+{
+  "name": "hypr",
+  "version": "2.0.0",
+  "description": "client-side implementation of Mozu Hypr templating and context helper library",
+  "main": "index.js",
+  "dependencies": {
+    "inherits": "^2.0.1",
+    "swig": "zetlen/swig"
+  },
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cli": "^1.11.0",
+    "jshint-stylish": "^1.0.0",
+    "load-grunt-tasks": "^1.0.0",
+    "time-grunt": "^1.0.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mozu/hypr"
+  },
+  "keywords": [
+    "mozu",
+    "hypr",
+    "templates",
+    "templating"
+  ],
+  "author": "Volusion, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mozu/hypr/issues"
+  },
+  "homepage": "https://github.com/mozu/hypr"
+}
