@@ -3,23 +3,24 @@ var inherits = require('inherits');
 var EE = require('events').EventEmitter;
 var Template = require('./template');
 
-var filters = [
-  'currency',
-  'divisibleby',
-  'add_url_param',
-  'slugify',
-  'truncatewords',
-  'string_format',
-  'findwhere',
-  'prop',
-  'get_product_attribute',
-  'get_product_attribute_value'
-];
+var filters = {
+  currency: require('./filters/currency'),
+  divisibleby: require('./filters/divisibleby'),
+  add_url_param: require('./filters/add_url_param'),
+  slugify: require('./filters/slugify'),
+  truncatewords: require('./filters/truncatewords'),
+  string_format: require('./filters/string_format'),
+  findwhere: require('./filters/findwhere'),
+  prop: require('./filters/prop'),
+  get_product_attribute: require('./filters/get_product_attribute'),
+  get_product_attribute_value: require('./filters/get_product_attribute_value')
+};
 
 var HyprManager = function(context) {
   var self = this;
   var cache = this.cache = {};
   EE.apply(this, arguments);
+  this.context = context;
   this.loader = swig.loaders.memory(context.templates, '/');
   this.engine = new swig.Swig({
     cache: {
@@ -34,8 +35,8 @@ var HyprManager = function(context) {
     loader: this.loader
   });
 
-  filters.forEach(function(name) {
-    self.engine.setFilter(name, require('./filters/' + name)(self));
+  Object.keys(filters).forEach(function(name) {
+    self.engine.setFilter(name, filters[name](self));
   });
 
 };
@@ -77,8 +78,10 @@ var methods = {
   }
 };
 
-Object.keys(methods).forEach(function(name) {
-  HyprManager.prototype[name] = methods[name];
-});
+for (var name in methods) {
+  if (methods.hasOwnProperty(name)) {
+    HyprManager.prototype[name] = methods[name];
+  }
+}
 
 module.exports = HyprManager;

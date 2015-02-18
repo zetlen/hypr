@@ -21,7 +21,7 @@ module.exports = function(manager) {
     return function(num, symbol) {
         if (!currencyInfo) {
             try {
-                currencyInfo = manager.engine.options.locals.siteContext.currencyInfo;
+                currencyInfo = manager.context.locals.siteContext.currencyInfo;
             } catch (e) {
                 currencyInfo = {
                     symbol: '$',
