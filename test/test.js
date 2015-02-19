@@ -9,13 +9,6 @@ var Hypr = new HyprManager({
 
 var MozuProduct = require('./fixture/product.json');
 
-describe('manager', function() {
-  it('evaluates scripts in place', function() {
-    expect(Hypr.evaluate('herpa derpa derp')).to.equal('herpa derpa derp');
-    expect(Hypr.evaluate('{% for num in list %}{% if not forloop.first %}, {% endif %}numba {{ num }}{% endfor %}', { list: [9, 9, 1] })).to.equal('numba 9, numba 9, numba 1');
-  });
-});
-
 describe('builtin filters', function() {
   it('has a currency filter that formats currency (currently US only)', function() {
       expect(Hypr.evaluate('{{ dolla|currency }}', { dolla: 3 })).to.equal('$3.00');

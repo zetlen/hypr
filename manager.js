@@ -1,7 +1,6 @@
 var swig = require('swig');
 var inherits = require('inherits');
 var EE = require('events').EventEmitter;
-var Template = require('./template');
 
 var filters = {
   currency: require('./filters/currency'),
@@ -18,21 +17,17 @@ var filters = {
 
 var HyprManager = function(context) {
   var self = this;
-  var cache = this.cache = {};
   EE.apply(this, arguments);
+
+  if (!context) {
+    throw new Error('Hypr requires a context to be set');
+  }
   this.context = context;
-  this.loader = swig.loaders.memory(context.templates, '/');
+  
   this.engine = new swig.Swig({
-    cache: {
-      get: function(key) {
-        return cache[key];
-      },
-      set: function(key, value) {
-        cache[key] = value;
-      }
-    },
-    locals: context.locals,
-    loader: this.loader
+    cache: this.cache || 'memory',
+    locals: this.context.locals,
+    loader: this.loader || swig.loaders.memory(context.templates, '/')
   });
 
   Object.keys(filters).forEach(function(name) {
@@ -42,46 +37,13 @@ var HyprManager = function(context) {
 };
 inherits(HyprManager, EE);
 
-var methods = {
-  getTemplate: function (path) {
-    var lpath = path.toLowerCase(),
-        tpt = this.cache[lpath],
-        tptText;
-    if (!tpt) {
-      tptText = this.loader.load(lpath);
-      if (!tptText) {
-        throw new ReferenceError("HyprLive template \"" + lpath + "\" not found!");
-      } else {
-        tpt = this.engine.compile(tptText, {
-          filename: lpath
-        });
-      }
-    }
-    return new Template(tpt, lpath, this);
-  },
-  render: function(template, obj) {
-    this.emit('beforerender', template.tpl, obj, template.path);
-    var evaluated = template.tpl(obj, template.path);
-    this.emit('afterrender', template.tpl, obj, template.path, evaluated);
-    return evaluated;
-  },
-  evaluate: function(tptText, obj) {
-    var tpl = this.cache[tptText];
-    // cache with the entire template string as the key
-    // seems ugly but has no obvious downsides
-    if (!tpl) {
-      tpl = this.engine.compile(tptText, {
-        filename: tptText
-      });
-    }
-    return this.render(new Template(tpl, tptText, this), obj);
-  }
+HyprManager.prototype.evaluate = function(tptText, obj) {
+  return this.engine.render(tptText, { locals: obj });    
 };
 
-for (var name in methods) {
-  if (methods.hasOwnProperty(name)) {
-    HyprManager.prototype[name] = methods[name];
-  }
+HyprManager.prototype.createLoader = function(name) {
+  return swig.loaders[name].apply(swig.loaders, [].slice.call(arguments, 1));
 }
+
 
 module.exports = HyprManager;
