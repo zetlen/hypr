@@ -2,7 +2,6 @@
   "name": "hypr",
   "version": "2.2.0",
   "description": "client-side implementation of Mozu Hypr templating and context helper library",
-  "main": "index.js",
   "dependencies": {
     "inherits": "^2.0.1",
     "swig": "zetlen/swig"
