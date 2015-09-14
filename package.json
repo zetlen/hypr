@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mozu/hypr"
+    "url": "https://github.com/zetlen/hypr"
   },
   "keywords": [
     "mozu",
@@ -33,7 +33,7 @@
   "author": "Volusion, Inc.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mozu/hypr/issues"
+    "url": "https://github.com/zetlen/hypr/issues"
   },
-  "homepage": "https://github.com/mozu/hypr"
+  "homepage": "https://github.com/zetlen/hypr"
 }
