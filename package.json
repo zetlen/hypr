@@ -1,6 +1,6 @@
 {
   "name": "hypr",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "client-side implementation of Mozu Hypr templating and context helper library",
   "main": "index.js",
   "dependencies": {
